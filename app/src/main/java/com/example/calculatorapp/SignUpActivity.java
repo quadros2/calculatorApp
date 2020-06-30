@@ -12,11 +12,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
+
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+    DocumentReference setUpRef;
 
     TextView signUpSign, signUpEmailSign, signUpPasswordSign;
     EditText signUpEmailEntry, signUpPasswordEntry;
@@ -55,7 +65,17 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                loginUI();
+                                setUpRef = firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s setup")
+                                        .document("setUp");
+                                Map<String, String> mapToSend = new HashMap<>();
+                                mapToSend.put("IsSetUp", "no");
+                                mapToSend.put("passkey", "none");
+                                setUpRef.set(mapToSend).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        loginUI();
+                                    }
+                                });
                             } else {
                                 Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();

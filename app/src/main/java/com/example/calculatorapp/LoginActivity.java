@@ -11,9 +11,19 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+    DocumentReference documentReference;
 
     private TextView welcome, emailSign, pwSign, signUpDirections;
     private EditText enterEmail, enterPassword;
@@ -35,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), SetUpActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
 
@@ -69,7 +79,11 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(this, SetUpActivity.class);
+                            documentReference = firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s setup")
+                                    .document("setUp");
+                            documentReference.update("IsSetUp", "no");
+                            documentReference.update("passkey", "none");
+                            Intent intent = new Intent(this, MainActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(LoginActivity.this, "Incorrect email or password",
