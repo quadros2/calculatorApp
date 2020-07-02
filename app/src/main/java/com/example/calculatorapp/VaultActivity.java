@@ -3,19 +3,44 @@ package com.example.calculatorapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class VaultActivity extends AppCompatActivity {
 
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+    CollectionReference collectionReference = firebaseFirestore.collection(
+            FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes");
+
     Button newNoteButton;
+
+    List<Note> notelist;
+
+    ListView vaultNotes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vault);
+
+        notelist = new ArrayList<>();
 
         newNoteButton = findViewById(R.id.newNoteButton);
         newNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -25,6 +50,29 @@ public class VaultActivity extends AppCompatActivity {
             }
         });
 
+        vaultNotes = findViewById(R.id.noteList);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                notelist.clear();
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    Note note = documentSnapshot.toObject(Note.class);
+                    if (note.getDate().equals("noshow")) {
+                        continue;
+                    }
+                    notelist.add(note);
+                }
+                NoteListAdapterActivity noteListAdapterActivity = new NoteListAdapterActivity(VaultActivity.this,
+                        notelist);
+                vaultNotes.setAdapter(noteListAdapterActivity);
+            }
+        });
     }
 
     public void createNote() {

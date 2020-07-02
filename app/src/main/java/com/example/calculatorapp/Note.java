@@ -2,20 +2,24 @@ package com.example.calculatorapp;
 
 public class Note {
 
-    String title, description, date;
+    String title, text, date;
 
-    Note(String setTitle, String setDescription, String setDate) {
+    Note(String setTitle, String setText, String setDate) {
         title = setTitle;
-        description = setDescription;
+        text = setText;
         date = setDate;
+    }
+
+    Note() {
+
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getText() {
+        return text;
     }
 
     public String getDate() {

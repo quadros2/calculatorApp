@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
+        <EditText
             android:id="@+id/noteTitle"
             android:layout_width="231dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
             android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="41dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/viewNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="view" />
-
-            <Button
                 android:id="@+id/deleteNote"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Delete" />
+                android:layout_height="45dp"
+                android:text="delete" />
+
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <EditText
         android:id="@+id/noteText"
         android:layout_width="match_parent"
-        android:layout_height="123dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/timeStamp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="TextView" />
 
 </LinearLayout>
