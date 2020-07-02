@@ -16,15 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 public class NoteListAdapterActivity extends ArrayAdapter<Note> {
-
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     private Activity appContext;
     private List<Note> noteList;
@@ -40,6 +40,8 @@ public class NoteListAdapterActivity extends ArrayAdapter<Note> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = appContext.getLayoutInflater();
         View listItems = inflater.inflate(R.layout.chunk_note, null, true);
+
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         EditText noteTitle = listItems.findViewById(R.id.noteTitle);
         EditText noteText = listItems.findViewById(R.id.noteText);
@@ -70,16 +72,23 @@ public class NoteListAdapterActivity extends ArrayAdapter<Note> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
+                        .document(note.getDate()).update("title", noteTitle.getText().toString());
+                note.setTitle(noteTitle.getText().toString());
+                /**
+                firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
+                        .document(note.getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String title = documentSnapshot.get("title").toString();
+                        noteTitle.setText(title);
+                    }
+                });
+                 **/
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                DocumentReference documentReference;
-                documentReference = firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
-                        .document(note.getDate());
-                String title = noteTitle.getText().toString();
-                documentReference.update("title", title);
-                noteTitle.setText(title);
             }
         });
 
@@ -90,16 +99,23 @@ public class NoteListAdapterActivity extends ArrayAdapter<Note> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
+                        .document(note.getDate()).update("text", noteText.getText().toString());
+                note.setText(noteText.getText().toString());
+                /**
+                firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
+                        .document(note.getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String text = documentSnapshot.get("text").toString();
+                        noteText.setText(text);
+                    }
+                });
+                 **/
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                DocumentReference documentReference;
-                documentReference = firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
-                        .document(note.getDate());
-                String text = noteText.getText().toString();
-                documentReference.update("text", text);
-                noteText.setText(text);
             }
         });
 
