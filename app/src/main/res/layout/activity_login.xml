@@ -30,7 +30,8 @@
         android:layout_height="50dp"
         android:background="#FFFFFF"
         android:ems="10"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textColor="#2196F3" />
 
     <TextView
         android:id="@+id/pwSign"
@@ -46,7 +47,8 @@
         android:layout_height="50dp"
         android:background="#FFFFFF"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="#2196F3" />
 
     <Button
         android:id="@+id/loginButton"

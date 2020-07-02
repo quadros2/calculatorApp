@@ -31,7 +31,8 @@
         android:background="#FFFFFF"
         android:ems="10"
         android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textColor="#2196F3" />
 
     <TextView
         android:id="@+id/signUpPasswordSign"
@@ -48,7 +49,8 @@
         android:background="#FFFFFF"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="#2196F3" />
 
     <Button
         android:id="@+id/createAccountButton"

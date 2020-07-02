@@ -28,6 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     DocumentReference setUpRef;
 
+    DocumentReference noteVaultRef;
+
     TextView signUpSign, signUpEmailSign, signUpPasswordSign;
     EditText signUpEmailEntry, signUpPasswordEntry;
     Button createAccount;
@@ -70,6 +72,14 @@ public class SignUpActivity extends AppCompatActivity {
                                 Map<String, String> mapToSend = new HashMap<>();
                                 mapToSend.put("IsSetUp", "no");
                                 mapToSend.put("passkey", "none");
+                                noteVaultRef = firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
+                                        .document("Initial Note");
+                                Map<String, String> notestart = new HashMap<>();
+                                notestart.put("title", "noshow");
+                                notestart.put("note", "noshow");
+                                notestart.put("date", "noshow");
+                                notestart.put("toShow", "no");
+                                noteVaultRef.set(notestart);
                                 setUpRef.set(mapToSend).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void accessVault() {
         Intent intent = new Intent(getApplicationContext(), VaultActivity.class);
+        valueText.setText("");
         startActivity(intent);
     }
 
