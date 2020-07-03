@@ -196,11 +196,12 @@ public class MainActivity extends AppCompatActivity {
     public void introduce() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Welcome!");
-        builder.setMessage("This is your new calculator vault. Others will think this is just an" +
-                "ordinary calculator, but you will know whats really behind this calculator. " +
-                "Type in a password you will remember using the symbols and numbers on this calculator." +
-                "Remember that this password is NOT RECOVERABLE, so make sure you remember it!" +
-                "Press the equals key when done.");
+        builder.setMessage("This is your new calculator vault. Others will think this is just an " +
+                "ordinary calculator, but you will know what's really behind this calculator. " +
+                "Please type in a password you will remember using the symbols and numbers on this calculator. " +
+                "Remember that this password is NOT RECOVERABLE. If you forget, or would like to change" +
+                " your password, you will have to uninstall the app and reinstall to change it. So make sure you remember it!" +
+                " Press the equals key when done.");
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

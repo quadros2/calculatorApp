@@ -1,5 +1,6 @@
 package com.example.calculatorapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,13 +43,13 @@ public class LoginActivity extends AppCompatActivity {
 
         //check if user was already signed in
 
-
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
+        introduce();
 
         //set the loginactivity views to visible
         welcome = findViewById(R.id.welcomeSign);
@@ -96,5 +98,19 @@ public class LoginActivity extends AppCompatActivity {
     public void signUpUI() {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
+    }
+
+    public void introduce() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Welcome!");
+        builder.setMessage("Lets get your vault set up. What makes our app unique is that you you can hide all " +
+                "personal notes, documents, etc. and access it through any device. To do this, please sign up with " +
+                "your email and a strong password or log in to an existing account. This will be a quick, one-time process.");
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.create().show();
     }
 }

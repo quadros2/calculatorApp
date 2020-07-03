@@ -75,16 +75,6 @@ public class NoteListAdapterActivity extends ArrayAdapter<Note> {
                 firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
                         .document(note.getDate()).update("title", noteTitle.getText().toString());
                 note.setTitle(noteTitle.getText().toString());
-                /**
-                firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
-                        .document(note.getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String title = documentSnapshot.get("title").toString();
-                        noteTitle.setText(title);
-                    }
-                });
-                 **/
             }
 
             @Override
@@ -102,16 +92,6 @@ public class NoteListAdapterActivity extends ArrayAdapter<Note> {
                 firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
                         .document(note.getDate()).update("text", noteText.getText().toString());
                 note.setText(noteText.getText().toString());
-                /**
-                firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s notes")
-                        .document(note.getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String text = documentSnapshot.get("text").toString();
-                        noteText.setText(text);
-                    }
-                });
-                 **/
             }
 
             @Override
