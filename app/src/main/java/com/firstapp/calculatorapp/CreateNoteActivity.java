@@ -1,4 +1,4 @@
-package com.example.calculatorapp;
+package com.firstapp.calculatorapp;
 
 import android.content.Intent;
 import android.os.Bundle;

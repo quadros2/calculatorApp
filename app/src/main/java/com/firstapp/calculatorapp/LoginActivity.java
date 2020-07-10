@@ -1,9 +1,11 @@
-package com.example.calculatorapp;
+package com.firstapp.calculatorapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.autofill.AutofillManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,19 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-    DocumentReference documentReference;
 
     private TextView welcome, emailSign, pwSign, signUpDirections;
     private EditText enterEmail, enterPassword;
@@ -46,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
         introduce();
 
@@ -67,6 +63,13 @@ public class LoginActivity extends AppCompatActivity {
         enterPassword = findViewById(R.id.enterPw);
         enterPassword.setVisibility(View.VISIBLE);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AutofillManager autofillManager = getSystemService(AutofillManager.class);
+            autofillManager.disableAutofillServices();
+            enterEmail.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+            enterPassword.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+        }
+
         //set buttons to visible and program them
         signUpButton = findViewById(R.id.signUpButton);
         signUpButton.setVisibility(View.VISIBLE);
@@ -81,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            documentReference = firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s setup")
+                            DocumentReference documentReference = firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid() + "'s setup")
                                     .document("setUp");
                             documentReference.update("IsSetUp", "no");
                             documentReference.update("passkey", "none");

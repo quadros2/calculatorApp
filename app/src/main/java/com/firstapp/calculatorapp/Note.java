@@ -1,4 +1,4 @@
-package com.example.calculatorapp;
+package com.firstapp.calculatorapp;
 
 public class Note {
 

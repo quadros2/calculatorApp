@@ -1,4 +1,4 @@
-package com.example.calculatorapp;
+package com.firstapp.calculatorapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -212,26 +212,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String newPasskey = valueText.getText().toString();
-        builder.setTitle("Confirm Passkey");
-        builder.setMessage("Your new passkey will be: " + newPasskey);
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                documentReference.update("IsSetUp", "yes");
-                documentReference.update("passkey", newPasskey);
-                Intent intent = new Intent(getApplicationContext(), VaultActivity.class);
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        if (newPasskey.equals("")) {
+            oops();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm Passkey");
+            builder.setMessage("Your new passkey will be: " + newPasskey);
+            builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    documentReference.update("IsSetUp", "yes");
+                    documentReference.update("passkey", newPasskey);
+                    Intent intent = new Intent(getApplicationContext(), VaultActivity.class);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-        builder.create().show();
+                }
+            });
+            builder.create().show();
+        }
     }
 
     public void accessVault() {
@@ -274,5 +278,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void oops() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Oops! Passkey must have at least one symbol or number");
+        builder1.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder1.create().show();
     }
 }
